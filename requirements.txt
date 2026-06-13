@@ -33,3 +33,4 @@ pytest-cov==6.0.0
 loguru==0.7.3
 requests
 greenlet>=3.0.0
+groq
