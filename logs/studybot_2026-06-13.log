@@ -44,3 +44,5 @@
 2026-06-13 20:44:09 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
 2026-06-13 20:44:09 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
 2026-06-13 20:46:15 | INFO     | reminders.scheduler:add_daily_reminder:105 - ⏰ یادآور برای 8706140805 در 20:00 ثبت شد
+2026-06-13 21:58:15 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-13 21:58:15 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد

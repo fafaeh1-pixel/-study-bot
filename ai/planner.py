@@ -1,4 +1,4 @@
-from google import genai
+import google.generativeai as genai
 from config import settings
 import jdatetime
 import random

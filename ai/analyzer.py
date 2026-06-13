@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from collections import defaultdict
-from ai.client import async_generate
+import google.generativeai as genai
 import json
 
 
