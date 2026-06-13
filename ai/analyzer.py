@@ -24,16 +24,19 @@ class AnalysisResult:
 def _build_stats(data):
     subject_minutes = defaultdict(int)
     daily_minutes = defaultdict(int)
+
     for s in data.sessions:
         subject_minutes[s["subject"]] += s["duration"]
         day_key = s["date"].strftime("%Y-%m-%d")
         daily_minutes[day_key] += s["duration"]
+
     days_with_study = len(daily_minutes)
     consistency = int((days_with_study / 30) * 100)
     avg_daily = data.total_minutes / max(days_with_study, 1)
     goal_pct = (avg_daily / data.daily_goal_minutes * 100) if data.daily_goal_minutes else 0
     top_subject = max(subject_minutes, key=subject_minutes.get) if subject_minutes else "-"
     weak_subject = min(subject_minutes, key=subject_minutes.get) if len(subject_minutes) > 1 else "-"
+
     return {
         "subject_minutes": dict(subject_minutes),
         "daily_minutes": dict(daily_minutes),
@@ -50,10 +53,14 @@ def _build_stats(data):
 def _build_prompt(data, stats):
     subjects_text = "\n".join(
         f"  - {subj}: {mins} دقیقه"
-        for subj, mins in sorted(stats["subject_minutes"].items(), key=lambda x: x[1], reverse=True)
+        for subj, mins in sorted(
+            stats["subject_minutes"].items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
     )
-    return f"""تو یک مشاور تحصیلی حرفه‌ای هستی. بر اساس داده‌های زیر، یک تحلیل کامل به فارسی ارائه بده.
 
+    return f"""تو یک مشاور تحصیلی حرفه‌ای هستی. بر اساس داده‌های زیر، یک تحلیل کامل به فارسی ارائه بده.
 
 اطلاعات دانشجو:
 - نام: {data.full_name}
@@ -63,10 +70,8 @@ def _build_prompt(data, stats):
 - میانگین روزانه: {stats['avg_daily_minutes']} دقیقه
 - درصد رسیدن به هدف: {stats['goal_achievement_pct']}٪
 
-
 توزیع دروس:
 {subjects_text}
-
 
 خروجی را دقیقاً در این قالب JSON بده:
 {{
@@ -79,8 +84,9 @@ def _build_prompt(data, stats):
 
 async def async_generate(prompt: str) -> str:
     from config import settings
+
     genai.configure(api_key=settings.GEMINI_API_KEY)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.0-flash")
     response = await model.generate_content_async(prompt)
     return response.text
 
@@ -88,11 +94,14 @@ async def async_generate(prompt: str) -> str:
 async def analyze_progress(data):
     stats = _build_stats(data)
     raw = await async_generate(_build_prompt(data, stats))
+
     if "```" in raw:
         raw = raw.split("```")[1]
         if raw.startswith("json"):
             raw = raw[4:]
+
     parsed = json.loads(raw.strip())
+
     return AnalysisResult(
         summary=parsed.get("summary", ""),
         strengths=parsed.get("strengths", []),
@@ -105,7 +114,10 @@ async def analyze_progress(data):
 def format_analysis_message(result):
     strengths = "\n".join(f"  ✅ {s}" for s in result.strengths)
     weaknesses = "\n".join(f"  ⚠️ {w}" for w in result.weaknesses)
-    def bar(v): return "█" * int(v / 10) + "░" * (10 - int(v / 10)) + f" {v:.0f}٪"
+
+    def bar(v):
+        return "█" * int(v / 10) + "░" * (10 - int(v / 10)) + f" {v:.0f}٪"
+
     return (
         f"📊 <b>تحلیل پیشرفت مطالعه</b>\n\n"
         f"📝 <b>خلاصه وضعیت:</b>\n{result.summary}\n\n"
