@@ -60,7 +60,7 @@ def _build_prompt(data, stats):
         )
     )
 
-    return f"""تو یک مشاور تحصیلی حرفه‌ای هستی. بر اساس داده‌های زیر، یک تحلیل کامل به فارسی ارائه بده.
+    return f"""تو یک مشاور تحصیلی حرفه‌ای هستی. فقط و فقط JSON معتبر برگردان، بدون توضیح اضافه و بدون markdown.
 
 اطلاعات دانشجو:
 - نام: {data.full_name}
@@ -73,13 +73,53 @@ def _build_prompt(data, stats):
 توزیع دروس:
 {subjects_text}
 
-خروجی را دقیقاً در این قالب JSON بده:
+خروجی دقیقاً در این قالب باشد:
 {{
-  "summary": "یک پاراگراف ۳-۴ جمله‌ای درباره وضعیت کلی",
+  "summary": "یک پاراگراف ۳ تا ۴ جمله‌ای",
   "strengths": ["نقطه قوت ۱", "نقطه قوت ۲", "نقطه قوت ۳"],
   "weaknesses": ["نقطه ضعف ۱", "نقطه ضعف ۲", "نقطه ضعف ۳"],
-  "advice": "یک توصیه کلیدی و عملی برای هفته آینده"
+  "advice": "یک توصیه عملی برای هفته آینده"
 }}"""
+
+
+def _extract_text(response):
+    try:
+        if getattr(response, "text", None):
+            return response.text
+    except Exception:
+        pass
+
+    try:
+        parts = response.candidates[0].content.parts
+        texts = []
+        for part in parts:
+            if hasattr(part, "text") and part.text:
+                texts.append(part.text)
+        if texts:
+            return "\n".join(texts)
+    except Exception:
+        pass
+
+    try:
+        return json.dumps(response.to_dict(), ensure_ascii=False)
+    except Exception:
+        return ""
+
+
+def _clean_json_text(raw: str) -> str:
+    raw = raw.strip()
+
+    if raw.startswith("```"):
+        raw = raw.strip("`")
+        if raw.startswith("json"):
+            raw = raw[4:].strip()
+
+    start = raw.find("{")
+    end = raw.rfind("}")
+    if start != -1 and end != -1:
+        raw = raw[start:end + 1]
+
+    return raw.strip()
 
 
 async def async_generate(prompt: str) -> str:
@@ -88,19 +128,14 @@ async def async_generate(prompt: str) -> str:
     genai.configure(api_key=settings.GEMINI_API_KEY)
     model = genai.GenerativeModel("gemini-2.0-flash")
     response = await model.generate_content_async(prompt)
-    return response.text
+    return _extract_text(response)
 
 
 async def analyze_progress(data):
     stats = _build_stats(data)
     raw = await async_generate(_build_prompt(data, stats))
-
-    if "```" in raw:
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-
-    parsed = json.loads(raw.strip())
+    cleaned = _clean_json_text(raw)
+    parsed = json.loads(cleaned)
 
     return AnalysisResult(
         summary=parsed.get("summary", ""),
