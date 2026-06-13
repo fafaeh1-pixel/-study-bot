@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 myenv/
 venv/
+=======
+BOT_TOKEN=your_telegram_bot_token
+DATABASE_URL=postgresql+asyncpg://user:pass@localhost/dbname
+OPENAI_API_KEY=your_openai_api_key
+>>>>>>> 0052d1dcc60a2afd3eb3bdd7c43e7ff6074997ea
