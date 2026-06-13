@@ -54,6 +54,7 @@ def _build_prompt(data, stats):
     )
     return f"""تو یک مشاور تحصیلی حرفه‌ای هستی. بر اساس داده‌های زیر، یک تحلیل کامل به فارسی ارائه بده.
 
+
 اطلاعات دانشجو:
 - نام: {data.full_name}
 - هدف روزانه: {data.daily_goal_minutes} دقیقه
@@ -62,8 +63,10 @@ def _build_prompt(data, stats):
 - میانگین روزانه: {stats['avg_daily_minutes']} دقیقه
 - درصد رسیدن به هدف: {stats['goal_achievement_pct']}٪
 
+
 توزیع دروس:
 {subjects_text}
+
 
 خروجی را دقیقاً در این قالب JSON بده:
 {{
@@ -72,6 +75,14 @@ def _build_prompt(data, stats):
   "weaknesses": ["نقطه ضعف ۱", "نقطه ضعف ۲", "نقطه ضعف ۳"],
   "advice": "یک توصیه کلیدی و عملی برای هفته آینده"
 }}"""
+
+
+async def async_generate(prompt: str) -> str:
+    from config import settings
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    response = await model.generate_content_async(prompt)
+    return response.text
 
 
 async def analyze_progress(data):
