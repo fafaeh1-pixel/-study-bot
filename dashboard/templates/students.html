@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}دانش‌آموزان{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1 class="page-title">دانش‌آموزان</h1>
+  <form class="search-box" method="get" action="/students">
+    <input class="form-control" name="search" placeholder="جستجو..." value="{{ search }}" style="width:220px">
+    <button type="submit" class="btn btn-primary">جستجو</button>
+    {% if search %}<a href="/students" class="btn btn-ghost">پاک کردن</a>{% endif %}
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>نام</th>
+          <th>شناسه تلگرام</th>
+          <th>هدف روزانه</th>
+          <th>یادآور</th>
+          <th>تاریخ عضویت</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:0.5rem">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem">
+                {{ s.full_name[0] if s.full_name else '؟' }}
+              </div>
+              {{ s.full_name }}
+            </div>
+          </td>
+          <td style="direction:ltr;text-align:right;color:var(--text-muted)">{{ s.telegram_id }}</td>
+          <td><span class="badge badge-primary">{{ s.daily_goal_minutes }} دق</span></td>
+          <td>
+            {% if s.reminder_enabled %}
+              <span class="badge badge-success">فعال {{ s.reminder_time }}</span>
+            {% else %}
+              <span class="badge" style="background:var(--surface-2);color:var(--text-muted)">غیرفعال</span>
+            {% endif %}
+          </td>
+          <td style="color:var(--text-muted);font-size:0.82rem">
+            {{ s.created_at.strftime('%Y/%m/%d') if s.created_at else '—' }}
+          </td>
+          <td><a href="/students/{{ s.telegram_id }}" class="btn btn-ghost btn-sm">مشاهده / ویرایش</a></td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem">
+            هیچ کاربری یافت نشد
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

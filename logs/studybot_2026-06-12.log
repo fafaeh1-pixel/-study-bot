@@ -1,0 +1,72 @@
+2026-06-12 13:45:02 | INFO     | __main__:main:60 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 13:45:02 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 13:45:02 | INFO     | __main__:on_startup:29 - دیتابیس آماده شد
+2026-06-12 13:45:03 | INFO     | __main__:on_startup:31 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 14:11:20 | INFO     | __main__:main:60 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 14:11:20 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 14:11:20 | INFO     | __main__:on_startup:29 - دیتابیس آماده شد
+2026-06-12 14:11:21 | INFO     | __main__:on_startup:31 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 14:13:59 | INFO     | __main__:main:60 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 14:13:59 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 14:13:59 | INFO     | __main__:on_startup:29 - دیتابیس آماده شد
+2026-06-12 14:14:00 | INFO     | __main__:on_startup:31 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 14:20:02 | INFO     | __main__:main:60 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 14:20:02 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 14:20:02 | INFO     | __main__:on_startup:29 - دیتابیس آماده شد
+2026-06-12 14:20:03 | INFO     | __main__:on_startup:31 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 15:27:46 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 15:27:46 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 15:27:46 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 15:27:47 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 15:28:58 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 15:28:58 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 15:28:58 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 15:28:58 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 15:30:14 | INFO     | reminders.scheduler:stop_scheduler:17 - ⏰ Scheduler متوقف شد
+2026-06-12 15:30:14 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 15:37:07 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 15:37:07 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 15:37:07 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 15:37:08 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 15:39:37 | INFO     | reminders.scheduler:stop_scheduler:17 - ⏰ Scheduler متوقف شد
+2026-06-12 15:39:37 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 16:12:46 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 16:12:46 | INFO     | reminders.scheduler:start_scheduler:11 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 16:12:46 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 16:12:46 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 16:27:23 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 16:27:23 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 16:27:23 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 16:27:23 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 16:28:09 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-12 16:28:09 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 16:28:25 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 16:28:25 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 16:28:25 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 16:28:25 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 16:32:00 | INFO     | reminders.scheduler:add_daily_reminder:69 - ⏰ یادآور برای 5500075084 در 20:07 ثبت شد
+2026-06-12 16:35:35 | INFO     | reminders.scheduler:add_daily_reminder:69 - ⏰ یادآور برای 5950658327 در 20:14 ثبت شد
+2026-06-12 16:43:14 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-12 16:43:14 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 16:43:32 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 16:43:32 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 16:43:32 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 16:43:32 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 17:04:01 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-12 17:04:01 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 17:12:59 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 17:12:59 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 17:12:59 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 17:12:59 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 17:17:12 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-12 17:17:12 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 17:36:28 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 17:36:28 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 17:36:28 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 17:36:29 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-12 17:38:32 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-12 17:38:32 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-12 17:40:14 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-12 17:40:14 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-12 17:40:14 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-12 17:40:15 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد

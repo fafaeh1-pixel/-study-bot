@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% block title %}داشبورد — StudyBot Pro{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">داشبورد هفتگی</h1>
+    <span style="color:var(--text-muted);font-size:0.82rem;display:flex;align-items:center;gap:0.4rem;margin-top:0.3rem">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--success);display:inline-block;animation:pulse 2s infinite"></span>
+      ۷ روز اخیر
+    </span>
+  </div>
+  <a href="/dashboard" class="btn btn-ghost btn-sm" style="display:flex;align-items:center;gap:0.4rem">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+    </svg>
+    بروزرسانی
+  </a>
+</div>
+
+
+<!-- KPI -->
+<div class="stats-grid">
+  <div class="stat-card primary">
+    <div class="stat-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <span class="stat-label">کل کاربران</span>
+    <span class="stat-value">{{ total_users }}</span>
+    <span class="stat-sub">نفر ثبت‌نام شده</span>
+  </div>
+
+  <div class="stat-card success">
+    <div class="stat-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    </div>
+    <span class="stat-label">کاربران فعال</span>
+    <span class="stat-value">{{ active_users }}</span>
+    <span class="stat-sub">این هفته</span>
+  </div>
+
+  <div class="stat-card warning">
+    <div class="stat-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <span class="stat-label">مجموع مطالعه</span>
+    <span class="stat-value">{{ hours }}<small style="font-size:1rem;font-weight:500;opacity:.65">h</small> {{ mins }}<small style="font-size:1rem;font-weight:500;opacity:.65">m</small></span>
+    <span class="stat-sub">این هفته</span>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon" style="background:rgba(99,102,241,0.1)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+    </div>
+    <span class="stat-label">تعداد جلسات</span>
+    <span class="stat-value" style="color:#a5b4fc">{{ total_sessions }}</span>
+    <span class="stat-sub">این هفته</span>
+  </div>
+</div>
+
+
+<div class="grid-2" style="margin-bottom:1.5rem">
+
+  <!-- نمودار روزانه -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+      </svg>
+      مطالعه روز به روز (دقیقه)
+    </div>
+    <div class="chart-wrap">
+      <canvas id="dailyChart"></canvas>
+    </div>
+  </div>
+
+  <!-- پرکارترین‌ها -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+        <path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+      </svg>
+      پرکارترین دانش‌آموزان هفته
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>نام</th><th>دقیقه</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for name, total in top_users %}
+          {% set max_val = top_users[0][1] if top_users else 1 %}
+          {% set pct = (total / max_val * 100) | int %}
+          <tr>
+            <td>
+              {% if loop.index == 1 %}<span style="font-size:1rem">🥇</span>
+              {% elif loop.index == 2 %}<span style="font-size:1rem">🥈</span>
+              {% elif loop.index == 3 %}<span style="font-size:1rem">🥉</span>
+              {% else %}<span style="color:var(--text-faint);font-size:0.82rem;font-weight:600">{{ loop.index }}</span>
+              {% endif %}
+            </td>
+            <td style="font-weight:500">{{ name }}</td>
+            <td><span class="badge badge-primary">{{ total }}</span></td>
+            <td>
+              <div class="progress-bar-wrap" style="width:90px">
+                <div class="progress-bar" style="width:{{ pct }}%"></div>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" style="color:var(--text-muted);text-align:center;padding:1.5rem 1rem">
+              هنوز داده‌ای ثبت نشده
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- آخرین کاربران -->
+<div class="card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <div class="card-title" style="margin-bottom:0">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      آخرین کاربران ثبت‌نام شده
+    </div>
+    <a href="/students" class="btn btn-ghost btn-sm">مشاهده همه ←</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>نام</th>
+          <th>شناسه تلگرام</th>
+          <th>هدف روزانه</th>
+          <th>تاریخ عضویت</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in recent_users %}
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:0.65rem">
+              <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#fff;flex-shrink:0">
+                {{ u.full_name[0] if u.full_name else '؟' }}
+              </div>
+              <span style="font-weight:500">{{ u.full_name or 'بی‌نام' }}</span>
+            </div>
+          </td>
+          <td style="direction:ltr;text-align:right">
+            <code style="background:var(--surface-2);padding:2px 8px;border-radius:6px;font-size:0.8rem;color:var(--text-muted)">{{ u.telegram_id }}</code>
+          </td>
+          <td><span class="badge badge-primary">{{ u.daily_goal_minutes }} دق</span></td>
+          <td style="color:var(--text-muted);font-size:0.82rem">
+            {% if u.created_at %}{{ u.created_at.strftime('%Y/%m/%d') }}{% else %}—{% endif %}
+          </td>
+          <td><a href="/students/{{ u.telegram_id }}" class="btn btn-ghost btn-sm">مشاهده</a></td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" style="text-align:center;padding:2.5rem;color:var(--text-muted)">
+            <div style="font-size:2rem;margin-bottom:0.5rem">👤</div>
+            هنوز کاربری ثبت نشده
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<script>
+(function() {
+  var raw = '{{ daily_stats | tojson | safe }}';
+  var dailyData = JSON.parse(raw);
+  var labels = dailyData.map(function(d) { return d.day; });
+  var minutes = dailyData.map(function(d) { return d.minutes; });
+  var max = Math.max.apply(null, minutes) || 1;
+
+  new Chart(document.getElementById('dailyChart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'دقیقه مطالعه',
+        data: minutes,
+        backgroundColor: minutes.map(function(v) {
+          var p = v / max;
+          return p >= 0.75 ? 'rgba(99,102,241,0.85)'
+               : p >= 0.4  ? 'rgba(99,102,241,0.6)'
+               :              'rgba(99,102,241,0.35)';
+        }),
+        borderColor: 'transparent',
+        borderWidth: 0,
+        borderRadius: 8,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          rtl: true,
+          backgroundColor: 'rgba(17,24,39,0.95)',
+          borderColor: '#334155',
+          borderWidth: 1,
+          padding: 10,
+          titleColor: '#f1f5f9',
+          bodyColor: '#94a3b8',
+          callbacks: {
+            label: function(ctx) { return '  ' + ctx.parsed.y + ' دقیقه'; }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b9ab0', font: { size: 12, family: 'Vazirmatn' } },
+          grid: { display: false },
+          border: { display: false }
+        },
+        y: {
+          ticks: { color: '#8b9ab0', font: { size: 11 } },
+          grid: { color: 'rgba(51,65,85,0.5)' },
+          border: { display: false }
+        }
+      },
+      animation: { duration: 900, easing: 'easeOutQuart' }
+    }
+  });
+})();
+</script>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ورود — StudyBot Pro</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <h1>📚 StudyBot Pro</h1>
+      <p>پنل مدیریت مطالعه</p>
+    </div>
+    {% if error %}
+    <div class="alert-error">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login">
+      <div class="form-group">
+        <label class="form-label">نام کاربری</label>
+        <input class="form-control" type="text" name="username" placeholder="admin" required autofocus>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رمز عبور</label>
+        <input class="form-control" type="password" name="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem">
+        ورود به داشبورد
+      </button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

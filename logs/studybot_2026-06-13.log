@@ -1,0 +1,46 @@
+2026-06-13 18:45:29 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 18:45:29 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 18:45:29 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 18:48:25 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 18:48:25 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 18:48:25 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 18:48:26 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 18:50:16 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-13 18:50:16 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-13 18:51:57 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 18:51:57 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 18:51:57 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 18:51:57 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:00:42 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 20:00:42 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 20:00:42 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 20:00:43 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:11:16 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 20:11:16 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 20:11:16 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 20:11:17 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:13:36 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-13 20:13:36 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-13 20:13:56 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 20:13:56 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 20:13:56 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 20:13:56 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:24:55 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-13 20:24:55 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-13 20:25:37 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 20:25:37 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 20:25:37 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 20:25:38 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:35:09 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-13 20:35:09 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-13 20:43:53 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 20:43:53 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 20:43:53 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 20:43:54 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:44:02 | INFO     | reminders.scheduler:stop_scheduler:27 - ⏰ Scheduler متوقف شد
+2026-06-13 20:44:02 | INFO     | __main__:on_shutdown:37 - ربات متوقف شد
+2026-06-13 20:44:09 | INFO     | __main__:main:62 - StudyBot Pro در حال راه‌اندازی...
+2026-06-13 20:44:09 | INFO     | reminders.scheduler:start_scheduler:21 - ⏰ Scheduler راه‌اندازی شد
+2026-06-13 20:44:09 | INFO     | __main__:on_startup:30 - دیتابیس آماده شد
+2026-06-13 20:44:09 | INFO     | __main__:on_startup:32 - ربات @motaleyar_bot شروع به کار کرد
+2026-06-13 20:46:15 | INFO     | reminders.scheduler:add_daily_reminder:105 - ⏰ یادآور برای 8706140805 در 20:00 ثبت شد
