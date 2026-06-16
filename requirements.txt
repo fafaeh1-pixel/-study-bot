@@ -35,3 +35,5 @@ requests
 greenlet>=3.0.0
 groq
 pytz
+gTTS
+edge-tts
