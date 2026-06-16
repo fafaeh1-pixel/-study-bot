@@ -2,23 +2,28 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from aiogram import Bot
 from logger import logger
+import pytz
 
-scheduler = AsyncIOScheduler(timezone="Asia/Tehran")
+TEHRAN = pytz.timezone("Asia/Tehran")
+scheduler = AsyncIOScheduler(timezone=TEHRAN)
+
 
 MAX_REMINDERS_FREE = 10
 MAX_REMINDERS_PREMIUM = 999
+
 
 
 def start_scheduler(bot: Bot) -> None:
     scheduler.start()
     scheduler.add_job(
         _check_expiring_subscriptions,
-        trigger=CronTrigger(hour=10, minute=0),
+        trigger=CronTrigger(hour=10, minute=0, timezone=TEHRAN),
         id="expiry_check",
         replace_existing=True,
         args=[bot],
     )
     logger.info("⏰ Scheduler راه‌اندازی شد")
+
 
 
 def stop_scheduler() -> None:
@@ -27,21 +32,17 @@ def stop_scheduler() -> None:
         logger.info("⏰ Scheduler متوقف شد")
 
 
+
 def get_user_reminder_count(telegram_id: int) -> int:
     jobs = [j for j in scheduler.get_jobs() if j.id.startswith(f"reminder_{telegram_id}_")]
     return len(jobs)
 
 
+
 def parse_time_input(time_str: str) -> tuple[int, int] | None:
-    """
-    پشتیبانی از فرمت‌های مختلف:
-      20:30 / 20.30 / 8:30pm / 8pm / 20 / 8:30 AM / 4:00am
-    برگشت (hour, minute) یا None اگه فرمت اشتباه بود
-    """
     import re
     time_str = time_str.strip().lower().replace(".", ":")
 
-    # فرمت AM/PM
     match = re.fullmatch(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", time_str)
     if match:
         h = int(match.group(1))
@@ -55,7 +56,6 @@ def parse_time_input(time_str: str) -> tuple[int, int] | None:
             return h, m
         return None
 
-    # فرمت HH:MM یا H:MM
     match = re.fullmatch(r"(\d{1,2}):(\d{2})", time_str)
     if match:
         h, m = int(match.group(1)), int(match.group(2))
@@ -63,7 +63,6 @@ def parse_time_input(time_str: str) -> tuple[int, int] | None:
             return h, m
         return None
 
-    # فقط ساعت — مثل "8" یا "20"
     match = re.fullmatch(r"(\d{1,2})", time_str)
     if match:
         h = int(match.group(1))
@@ -72,6 +71,7 @@ def parse_time_input(time_str: str) -> tuple[int, int] | None:
         return None
 
     return None
+
 
 
 def add_daily_reminder(telegram_id: int, hour: int, minute: int, bot: Bot, is_premium: bool = False) -> bool:
@@ -98,12 +98,13 @@ def add_daily_reminder(telegram_id: int, hour: int, minute: int, bot: Bot, is_pr
 
     scheduler.add_job(
         send_reminder,
-        trigger=CronTrigger(hour=hour, minute=minute),
+        trigger=CronTrigger(hour=hour, minute=minute, timezone=TEHRAN),
         id=job_id,
         replace_existing=True,
     )
     logger.info(f"⏰ یادآور برای {telegram_id} در {hour:02d}:{minute:02d} ثبت شد")
     return True
+
 
 
 def remove_all_reminders(telegram_id: int) -> int:
@@ -113,14 +114,16 @@ def remove_all_reminders(telegram_id: int) -> int:
     return len(jobs)
 
 
+
 async def _check_expiring_subscriptions(bot: Bot) -> None:
     from datetime import datetime, timedelta
     from sqlalchemy import select
     from database.engine import AsyncSessionLocal
     from database.models.user import User
 
-    three_days_later = datetime.utcnow() + timedelta(days=3)
-    tomorrow = datetime.utcnow() + timedelta(days=1)
+    now_tehran = datetime.now(TEHRAN).replace(tzinfo=None)
+    three_days_later = now_tehran + timedelta(days=3)
+    tomorrow = now_tehran + timedelta(days=1)
 
     async with AsyncSessionLocal() as db:
         result = await db.execute(
@@ -133,7 +136,7 @@ async def _check_expiring_subscriptions(bot: Bot) -> None:
         users = result.scalars().all()
 
     for user in users:
-        days_left = (user.premium_expire - datetime.utcnow()).days + 1
+        days_left = (user.premium_expire - now_tehran).days + 1
         try:
             await bot.send_message(
                 chat_id=user.telegram_id,

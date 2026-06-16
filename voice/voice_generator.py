@@ -3,9 +3,8 @@ import asyncio
 from io import BytesIO
 
 
-# صداهای فارسی موجود در edge-tts مایکروسافت
-VOICE_FEMALE = "fa-IR-DilaraNeural"   # صدای زن
-VOICE_MALE   = "fa-IR-FaridNeural"    # صدای مرد
+VOICE_FEMALE = "fa-IR-DilaraNeural"
+VOICE_MALE   = "fa-IR-FaridNeural"
 
 
 async def _edge_tts_generate(text: str, voice: str) -> BytesIO:
@@ -20,11 +19,6 @@ async def _edge_tts_generate(text: str, voice: str) -> BytesIO:
 
 
 def text_to_voice(text: str, gender: str = "female") -> BytesIO:
-    """
-    تبدیل متن فارسی به ویس با کیفیت بالا
-    gender: 'female' یا 'male'
-    کاملاً رایگان — بدون API Key
-    """
     clean = _clean_text(text)
     voice = VOICE_FEMALE if gender == "female" else VOICE_MALE
 
@@ -38,13 +32,12 @@ def text_to_voice(text: str, gender: str = "female") -> BytesIO:
         else:
             return loop.run_until_complete(_edge_tts_generate(clean, voice))
     except Exception:
-        # fallback به gTTS عربی
         return _gtts_fallback(clean)
 
 
 def _gtts_fallback(text: str) -> BytesIO:
     from gtts import gTTS
-    tts = gTTS(text=text, lang="ar", slow=False)
+    tts = gTTS(text=text, lang="fa", slow=False)
     buf = BytesIO()
     tts.write_to_fp(buf)
     buf.seek(0)
