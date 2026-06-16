@@ -7,8 +7,9 @@ def get_main_keyboard() -> ReplyKeyboardMarkup:
         keyboard=[
             [KeyboardButton(text=texts.BTN_LOG_STUDY), KeyboardButton(text=texts.BTN_AI_ANALYSIS)],
             [KeyboardButton(text=texts.BTN_DAILY_REPORT), KeyboardButton(text=texts.BTN_WEEKLY_REPORT)],
-            [KeyboardButton(text=texts.BTN_REMINDER), KeyboardButton(text=texts.BTN_SETTINGS)],
-            [KeyboardButton(text=texts.BTN_PREMIUM), KeyboardButton(text=texts.BTN_HELP)],
+            [KeyboardButton(text=texts.BTN_REMINDER), KeyboardButton(text=texts.BTN_MY_REMINDERS)],  # ← جدید
+            [KeyboardButton(text=texts.BTN_PREMIUM), KeyboardButton(text=texts.BTN_SETTINGS)],
+            [KeyboardButton(text=texts.BTN_HELP)],
         ],
         resize_keyboard=True,
         input_field_placeholder="یه گزینه انتخاب کن...",

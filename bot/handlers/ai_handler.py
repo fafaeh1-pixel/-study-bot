@@ -77,7 +77,7 @@ async def ai_analysis_handler(message: Message, db: AsyncSession, db_user: User)
     sessions = await repo.get_week_sessions(db_user.telegram_id)
 
     if not sessions:
-        await message.answer("📭 هنوز جلسه‌ای ثبت نکردی.\n\nابتدا چند جلسه مطالعه ثبت کن.")
+        await message.answer("📭 هنوز که جلسه‌ای واسه مطالعه ثبت نکردی.\n\nابتدا چند جلسه مطالعه ثبت کن.")
         return
 
     data = _build_study_data(sessions, db_user.full_name, db_user.daily_goal_minutes)

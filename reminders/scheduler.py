@@ -1,17 +1,22 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.date import DateTrigger
 from aiogram import Bot
+from datetime import datetime
 from logger import logger
 import pytz
 
+
 TEHRAN = pytz.timezone("Asia/Tehran")
 scheduler = AsyncIOScheduler(timezone=TEHRAN)
-
 
 MAX_REMINDERS_FREE = 10
 MAX_REMINDERS_PREMIUM = 999
 
 
+# ─────────────────────────────────────────────
+# راه‌اندازی و توقف
+# ─────────────────────────────────────────────
 
 def start_scheduler(bot: Bot) -> None:
     scheduler.start()
@@ -25,98 +30,114 @@ def start_scheduler(bot: Bot) -> None:
     logger.info("⏰ Scheduler راه‌اندازی شد")
 
 
-
 def stop_scheduler() -> None:
     if scheduler.running:
         scheduler.shutdown()
         logger.info("⏰ Scheduler متوقف شد")
 
 
+# ─────────────────────────────────────────────
+# مدیریت یادآورها
+# ─────────────────────────────────────────────
 
 def get_user_reminder_count(telegram_id: int) -> int:
-    jobs = [j for j in scheduler.get_jobs() if j.id.startswith(f"reminder_{telegram_id}_")]
+    """تعداد یادآورهای فعال (هنوز اجرا نشده) کاربر"""
+    jobs = [
+        j for j in scheduler.get_jobs()
+        if j.id.startswith(f"reminder_{telegram_id}_")
+    ]
     return len(jobs)
 
 
-
-def parse_time_input(time_str: str) -> tuple[int, int] | None:
-    import re
-    time_str = time_str.strip().lower().replace(".", ":")
-
-    match = re.fullmatch(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", time_str)
-    if match:
-        h = int(match.group(1))
-        m = int(match.group(2)) if match.group(2) else 0
-        period = match.group(3)
-        if period == "pm" and h != 12:
-            h += 12
-        if period == "am" and h == 12:
-            h = 0
-        if 0 <= h <= 23 and 0 <= m <= 59:
-            return h, m
-        return None
-
-    match = re.fullmatch(r"(\d{1,2}):(\d{2})", time_str)
-    if match:
-        h, m = int(match.group(1)), int(match.group(2))
-        if 0 <= h <= 23 and 0 <= m <= 59:
-            return h, m
-        return None
-
-    match = re.fullmatch(r"(\d{1,2})", time_str)
-    if match:
-        h = int(match.group(1))
-        if 0 <= h <= 23:
-            return h, 0
-        return None
-
-    return None
-
-
-
-def add_daily_reminder(telegram_id: int, hour: int, minute: int, bot: Bot, is_premium: bool = False) -> bool:
+def add_once_reminder(
+    telegram_id: int,
+    run_at: datetime,
+    bot: Bot,
+    is_premium: bool = False,
+) -> bool:
+    """
+    یادآور یه‌باره در تاریخ و ساعت دقیق.
+    بعد از اجرا خودکار حذف می‌شه.
+    """
     current_count = get_user_reminder_count(telegram_id)
     limit = MAX_REMINDERS_PREMIUM if is_premium else MAX_REMINDERS_FREE
 
     if current_count >= limit:
         return False
 
-    job_id = f"reminder_{telegram_id}_{hour:02d}{minute:02d}"
+    # اطمینان از timezone-aware بودن
+    if run_at.tzinfo is None:
+        run_at = TEHRAN.localize(run_at)
 
-    if scheduler.get_job(job_id):
-        scheduler.remove_job(job_id)
+    job_id = f"reminder_{telegram_id}_{int(run_at.timestamp())}"
 
     async def send_reminder():
         try:
             from bot.texts_motivational import get_random_motivation
             await bot.send_message(
                 chat_id=telegram_id,
-                text=f"⏰ یادآور مطالعه!\n\n{get_random_motivation()}\n\n📚 وقتشه مطالعه کنی!",
+                text=(
+                    f"⏰ <b>یادآور مطالعه!</b>\n\n"
+                    f"{get_random_motivation()}\n\n"
+                    f"📚 وقتشه مطالعه کنی!"
+                ),
+                parse_mode="HTML",
             )
+            logger.info(f"✅ یادآور {job_id} ارسال شد")
         except Exception as e:
             logger.error(f"خطا در ارسال یادآور به {telegram_id}: {e}")
 
     scheduler.add_job(
         send_reminder,
-        trigger=CronTrigger(hour=hour, minute=minute, timezone=TEHRAN),
+        trigger=DateTrigger(run_date=run_at, timezone=TEHRAN),
         id=job_id,
-        replace_existing=True,
+        replace_existing=False,
+        misfire_grace_time=300,
     )
-    logger.info(f"⏰ یادآور برای {telegram_id} در {hour:02d}:{minute:02d} ثبت شد")
+    logger.info(f"⏰ یادآور یه‌باره برای {telegram_id} در {run_at.strftime('%Y-%m-%d %H:%M')} ثبت شد")
     return True
 
 
+def remove_reminder_by_index(telegram_id: int, index: int) -> bool:
+    """حذف یادآور بر اساس شماره (از لیست مرتب‌شده)"""
+    jobs = sorted(
+        [j for j in scheduler.get_jobs() if j.id.startswith(f"reminder_{telegram_id}_")],
+        key=lambda j: j.next_run_time,
+    )
+    if 0 <= index < len(jobs):
+        scheduler.remove_job(jobs[index].id)
+        logger.info(f"🗑 یادآور {jobs[index].id} حذف شد")
+        return True
+    return False
+
 
 def remove_all_reminders(telegram_id: int) -> int:
-    jobs = [j for j in scheduler.get_jobs() if j.id.startswith(f"reminder_{telegram_id}_")]
+    """حذف همه یادآورهای فعال کاربر"""
+    jobs = [
+        j for j in scheduler.get_jobs()
+        if j.id.startswith(f"reminder_{telegram_id}_")
+    ]
     for j in jobs:
         scheduler.remove_job(j.id)
+    logger.info(f"🗑 {len(jobs)} یادآور برای {telegram_id} حذف شد")
     return len(jobs)
 
 
+def list_user_reminders(telegram_id: int) -> list[datetime]:
+    """لیست زمان یادآورهای فعال کاربر (مرتب‌شده)"""
+    jobs = [
+        j for j in scheduler.get_jobs()
+        if j.id.startswith(f"reminder_{telegram_id}_")
+    ]
+    return sorted([j.next_run_time for j in jobs if j.next_run_time])
+
+
+# ─────────────────────────────────────────────
+# چک انقضای اشتراک
+# ─────────────────────────────────────────────
 
 async def _check_expiring_subscriptions(bot: Bot) -> None:
-    from datetime import datetime, timedelta
+    from datetime import timedelta
     from sqlalchemy import select
     from database.engine import AsyncSessionLocal
     from database.models.user import User
